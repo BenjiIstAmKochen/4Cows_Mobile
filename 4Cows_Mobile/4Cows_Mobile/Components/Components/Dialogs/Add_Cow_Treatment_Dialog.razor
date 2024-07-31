@@ -1,4 +1,6 @@
 ﻿@inject ISnackbar Snackbar
+@using BB_Cow.Class
+@using BB_Cow.Services
 @inject CowTreatmentService cowTreatmentService
 
 <MudDialog>
@@ -68,7 +70,7 @@
     public void GetEarNumber(NumberEntry entry, KeyboardEventArgs e)
     {
         var index = numbers.IndexOf(entry);
-        List<Treatment_Cow> test = cowTreatmentService.Treatments;
+        List<Treatment_Cow> test = cowTreatmentService.Treatments.ToList();
         numbers[index].EarValue = cowTreatmentService.Treatments.Where(x => x.Collar_Number == entry.Value).OrderByDescending(x => x.Administration_Date).Select(x => x.Ear_Number).FirstOrDefault();
         if (e.Key == "Enter")
         {
@@ -125,22 +127,22 @@
         return returnBool;
     }
 
-    private async Task<IEnumerable<string>> Search_Cow_Treatment_Medicaments(string value)
+    private async Task<IEnumerable<string>> Search_Cow_Treatment_Medicaments(string value, CancellationToken cancellationToken)
     {
         await Task.Delay(0);
         if (string.IsNullOrEmpty(value))
         {
-            return cowTreatmentService.CowMedicineTreatmentList;
+            return cowTreatmentService.CowMedicineTreatmentList.ToList();
         }
         return cowTreatmentService.CowMedicineTreatmentList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private async Task<IEnumerable<string>> Search_Cow_Treatment_WhereHow(string value)
+    private async Task<IEnumerable<string>> Search_Cow_Treatment_WhereHow(string value, CancellationToken cancellationToken)
     {
         await Task.Delay(0);
         if (string.IsNullOrEmpty(value) || cowTreatmentService.CowWhereHowList.Count == 0)
         {
-            return cowTreatmentService.CowWhereHowList;
+            return cowTreatmentService.CowWhereHowList.ToList();
         }
         return cowTreatmentService.CowWhereHowList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }

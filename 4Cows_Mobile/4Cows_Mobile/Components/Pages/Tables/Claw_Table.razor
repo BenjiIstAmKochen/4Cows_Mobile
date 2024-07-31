@@ -1,7 +1,5 @@
 ﻿@page "/Klauen_Daten"
 @inject IDialogService DialogService
-@using BB_Cow.Components
-@using BB_Cow.Components.Dialogs
 @using OfficeOpenXml
 @using OfficeOpenXml.Style
 @inject ClawTreatmentService clawTreatmentService
@@ -47,7 +45,7 @@
     protected override async Task OnInitializedAsync()
     {
         await clawTreatmentService.GetAllDataAsync();
-        Treatment_Claws = clawTreatmentService.Treatments;
+        Treatment_Claws = clawTreatmentService.Treatments.ToList();
     }
     private bool ClawFilterFunc1(Treatment_Claw Treatment_Cow) => FilterFuncClaw(Treatment_Cow, searchClaw);
 
@@ -86,6 +84,7 @@
 
     private byte[] ExportDataToExcel()
     {
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         using (var package = new ExcelPackage())
         {
             var worksheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -107,7 +106,7 @@
             for (int i = 0; i < Treatment_Claws.Count; i++)
             {
                 worksheet.Cells[i + 3, 1].Value = Treatment_Claws[i].Collar_Number;
-                worksheet.Cells[i + 3, 2].Value = Treatment_Claws[i].Treatment_Date;
+                worksheet.Cells[i + 3, 2].Value = (object)Treatment_Claws[i].Treatment_Date;
                 worksheet.Cells[i + 3, 3].Value = Treatment_Claws[i].Claw_Finding_LV;
                 worksheet.Cells[i + 3, 4].Value = Treatment_Claws[i].Bandage_LV ? "Verband" : "Kein Verband";
                 worksheet.Cells[i + 3, 5].Value = Treatment_Claws[i].Block_LV ? "Klotz" : "Kein Klotz";

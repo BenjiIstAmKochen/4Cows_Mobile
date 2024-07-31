@@ -1,4 +1,6 @@
 ﻿@inject ISnackbar Snackbar
+@using BB_Cow.Class
+@using BB_Cow.Services
 @inject ClawTreatmentService clawTreatmentService
 
 <MudDialog>
@@ -129,12 +131,12 @@
         return returnBool;
     }
 
-    private async Task<IEnumerable<string>> Search_Claw_Treatment_Claw_Finding(string value)
+    private async Task<IEnumerable<string>> Search_Claw_Treatment_Claw_Finding(string value, CancellationToken cancellationToken)
     {
         await Task.Delay(0);
         if (string.IsNullOrEmpty(value))
         {
-            return clawTreatmentService.ClawFindingList;
+            return clawTreatmentService.ClawFindingList.ToList();
         }
         return clawTreatmentService.ClawFindingList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }

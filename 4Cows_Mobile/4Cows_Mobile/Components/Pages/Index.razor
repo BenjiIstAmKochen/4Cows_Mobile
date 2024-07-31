@@ -1,9 +1,10 @@
 ﻿@page "/"
 @inject IDialogService DialogService
 @inject IJSRuntime JSRuntime
-@using BB_Cow.Components
-@using BB_Cow.Components.Dialogs
 @inject ISnackbar Snackbar
+@using BB_Cow.Class
+@using BB_Cow.Services
+@using _4Cows_Mobile.Components.Components.Dialogs
 @inject CowTreatmentService cowTreatmentService
 @inject PCowTreatmentService pCowTreatmentService
 @inject PClawTreatmentService pClawTreatmentService
@@ -366,10 +367,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        CowList = cowTreatmentService.Treatments;
-        ClawList = clawTreatmentService.Treatments;
-        Planned_CowList = pCowTreatmentService.Treatments;
-        Planned_ClawList = pClawTreatmentService.Treatments;
+        CowList = cowTreatmentService.Treatments.ToList();
+        ClawList = clawTreatmentService.Treatments.ToList();
+        Planned_CowList = pCowTreatmentService.Treatments.ToList();
+        Planned_ClawList = pClawTreatmentService.Treatments.ToList();
 
         try
         {

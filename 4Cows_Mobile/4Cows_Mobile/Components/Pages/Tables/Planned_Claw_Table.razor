@@ -1,8 +1,6 @@
 ﻿@page "/geplante_Klauen_Daten"
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
-@using BB_Cow.Components
-@using BB_Cow.Components.Dialogs
 @inject PClawTreatmentService pClawTreatmentService
 @inject ClawTreatmentService clawTreatmentService
 
@@ -54,7 +52,7 @@
     protected override async Task OnInitializedAsync()
     {
         await pClawTreatmentService.GetAllDataAsync();
-        Treatment_Claws = pClawTreatmentService.Treatments;
+        Treatment_Claws = pClawTreatmentService.Treatments.ToList();
     }
     private bool ClawFilterFunc1(Planned_Treatment_Claw Treatment_Cow) => FilterFuncClaw(Treatment_Cow, searchClaw);
 
